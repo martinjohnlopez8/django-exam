@@ -1,0 +1,11 @@
+{% extends 'addressbook/base.html' %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="import-csv">
+    <button type="submit">Upload</button>
+    <p>{{ error }}</p>
+  </form>
+  <a href="{% url 'addressbook:home' %}">Go Back</a>
+{% endblock %}

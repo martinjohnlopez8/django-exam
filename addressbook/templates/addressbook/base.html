@@ -1,0 +1,33 @@
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Address Book</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'addressbook/style.css' %}">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="navbar-header col-md-8">
+                        <a class="navbar-brand" href="/">Address Book</a>
+                    </div>
+                    <ul class="nav navbar-nav col-md-4">
+                      <li><a href="{% url 'addressbook:add_contact' %}">Add Contact</a></li>
+                      <li><a href="{% url 'addressbook:import_csv' %}">Import CSV</a></li>
+                      <li><a href="{% url 'addressbook:export_csv' %}">Export CSV</a></li>
+                      <li><a href="{% url 'addressbook:logout' %}">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

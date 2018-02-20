@@ -1,0 +1,26 @@
+{% extends 'addressbook/base.html' %}
+
+{% block content %}
+<html>
+	<body>
+		<table class="table">
+			<tr>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Contact Number</th>
+				<th>Address</th>
+			</tr>
+			{% for contact in contacts %}
+			<tr>
+				<td> {{ contact.first_name}} </td>
+				<td> {{ contact.last_name}} </td>
+				<td> {{ contact.contact_number }} </td>
+				<td> {{ contact.address}} </td>
+				<td> <a href="{% url 'addressbook:edit_contact' contact.id %}" role="button" class="btn btn-primary btn-lg active" aria-disabled="true"">Update</a> </td>
+				<td><a href="{% url 'addressbook:delete_confirmation' contact.id %}" role="button" class="btn btn-danger btn-lg active" aria-disabled="true">Delete</a></td>	
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+</html>
+{% endblock %}
