@@ -225,3 +225,10 @@ footer a:hover, footer a:focus { color: #fff; border-bottom: 1px dotted #fff; }
 
 }
 
+.form-blue {
+	background-color: #003366;
+}
+
+.font-blue {
+	color: #003366;
+}

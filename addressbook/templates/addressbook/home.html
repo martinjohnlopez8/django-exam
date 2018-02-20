@@ -16,8 +16,8 @@
 				<td> {{ contact.last_name}} </td>
 				<td> {{ contact.contact_number }} </td>
 				<td> {{ contact.address}} </td>
-				<td> <a href="{% url 'addressbook:edit_contact' contact.id %}" role="button" class="btn btn-primary btn-lg active" aria-disabled="true"">Update</a> </td>
-				<td><a href="{% url 'addressbook:delete_confirmation' contact.id %}" role="button" class="btn btn-danger btn-lg active" aria-disabled="true">Delete</a></td>	
+				<td> <a href="{% url 'addressbook:edit_contact' contact.id %}" role="button" class="btn btn-primary btn-md active" aria-disabled="true"">Update</a> </td>
+				<td><a href="{% url 'addressbook:delete_confirmation' contact.id %}" role="button" class="btn btn-danger btn-md active" aria-disabled="true">Delete</a></td>	
 			</tr>
 			{% endfor %}
 		</table>
