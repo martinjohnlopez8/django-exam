@@ -1,15 +1,22 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
+from addressbook.views import ContactCreateView
+from addressbook.views import ContactUpdateView
+from addressbook.views import LoginView
+from addressbook.views import ContactListView
+from addressbook.views import ContactDeleteView
+from addressbook.views import LogoutView
 
 from . import views
 
 app_name = 'addressbook'
 urlpatterns = [
-	path('', views.home, name='home'),
-	path('logout/', views.logout, name='logout'),
-	path('add/', views.add_contact, name='add_contact'),
-	path('edit/<int:contact_id>', views.edit_contact, name='edit_contact'),
-	path('delete/<int:contact_id>', views.delete_contact, name='delete_contact'),
-	path('delete/confirmation/<int:contact_id>', views.delete_confirmation, name='delete_confirmation'),
-	path('exportcsv', views.export_csv, name='export_csv'),
-	path('importcsv', views.import_csv, name='import_csv')
+	path('', login_required(ContactListView.as_view()), name='home'),
+	path('logout/', LogoutView.as_view(), name='logout'),
+	path('add/', login_required(ContactCreateView.as_view()), name='add_contact'),
+	path('edit/<int:contact_id>', login_required(ContactUpdateView.as_view()), name='edit_contact'),
+	path('delete/<int:contact_id>', login_required(ContactDeleteView.as_view()), name='delete_contact'),
+	path('exportcsv/', views.export_csv, name='export_csv'),
+	path('importcsv/', views.import_csv, name='import_csv'),
+	path('login/', LoginView.as_view(), name='login')
 ]

@@ -126,3 +126,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+LOGIN_URL = '/login/'
