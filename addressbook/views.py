@@ -70,19 +70,6 @@ class ContactListView(ListView):
 		})
 		return context
 
-class ContactCreateView(CreateView):
-	template_name = 'addressbook/add_contact.html'
-	form_class = ContactForm
-
-	# def get_query(self):
-	# 	return Contact.objects.filter(user=self.request.user)
-
-	def form_valid(self, form):
-		contact = form.save(commit=False)
-		contact.user = self.request.user
-		contact.save()
-		return redirect('addressbook:home')
-
 class ContactUpdateView(UpdateView):
 	model = Contact
 	template_name = 'addressbook/edit_contact.html'

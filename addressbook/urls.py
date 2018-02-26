@@ -14,7 +14,6 @@ app_name = 'addressbook'
 urlpatterns = [
 	path('', login_required(ContactListView.as_view()), name='home'),
 	path('logout/', LogoutView.as_view(), name='logout'),
-	path('add/', login_required(ContactCreateView.as_view()), name='add_contact'),
 	path('edit/<int:contact_id>', login_required(ContactUpdateView.as_view()), name='edit_contact'),
 	path('delete/<int:contact_id>', login_required(ContactDeleteView.as_view()), name='delete_contact'),
 	path('exportcsv/', views.export_csv, name='export_csv'),
