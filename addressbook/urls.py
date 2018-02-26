@@ -6,6 +6,7 @@ from addressbook.views import LoginView
 from addressbook.views import ContactListView
 from addressbook.views import ContactDeleteView
 from addressbook.views import LogoutView
+from addressbook.views import AjaxContactCreateView
 
 from . import views
 
@@ -18,5 +19,6 @@ urlpatterns = [
 	path('delete/<int:contact_id>', login_required(ContactDeleteView.as_view()), name='delete_contact'),
 	path('exportcsv/', views.export_csv, name='export_csv'),
 	path('importcsv/', views.import_csv, name='import_csv'),
-	path('login/', LoginView.as_view(), name='login')
+	path('login/', LoginView.as_view(), name='login'),
+	path('testing/', AjaxContactCreateView.as_view(), name='testing')
 ]

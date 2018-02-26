@@ -17,6 +17,9 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from braces import views
 
 from .models import Contact
 
@@ -51,19 +54,28 @@ class LoginView(FormView):
 class ContactListView(ListView):
 	model = Contact
 	template_name = 'addressbook/home.html'
+	form_class = ContactForm
 	context_object_name = 'contacts'
 
 	def get_queryset(self):
 		queryset = Contact.objects.filter(user=self.request.user)
 		return queryset
 
+	def get_context_data(self, **kwargs):
+		context = super(ContactListView, self).get_context_data(**kwargs)
+		user = self.request.user
+		contact_create_form = ContactForm()
+		context.update({
+			'form': contact_create_form
+		})
+		return context
 
 class ContactCreateView(CreateView):
 	template_name = 'addressbook/add_contact.html'
 	form_class = ContactForm
 
-	def get_query(self):
-		return Contact.objects.filter(user=self.request.user)
+	# def get_query(self):
+	# 	return Contact.objects.filter(user=self.request.user)
 
 	def form_valid(self, form):
 		contact = form.save(commit=False)
@@ -92,6 +104,35 @@ class LogoutView(View):
 	def get(self, request):
 		user_logout(request)
 		return redirect('addressbook:login')
+
+class AjaxContactCreateView(views.JSONResponseMixin, views.AjaxResponseMixin, View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+	    return super(AjaxContactCreateView, self).dispatch(request, *args, **kwargs)
+
+	def post_ajax(self, request, *args, **kwargs):
+		user = self.request.user
+		first_name = request.POST.get('first_name')
+		last_name = request.POST.get('last_name')
+		contact_number = request.POST.get('contact_number')
+		address = request.POST.get('address')
+
+		data = {}
+		data['first_name'] = first_name
+		data['last_name'] = last_name
+		data['contact_number'] = contact_number
+		data['address'] = address
+
+		contact = Contact()
+		contact.user = user
+		contact.first_name = first_name
+		contact.last_name = last_name
+		contact.contact_number = contact_number
+		contact.address = address
+		contact.save()
+
+		print(data)
+		return self.render_json_response(data)
 
 def export_csv(request):
 	queryset = Contact.objects.defer('id', 'user').filter(user=request.user)

@@ -14,7 +14,7 @@
                         <a class="navbar-brand" href="/">Address Book</a>
                     </div>
                     <ul class="nav navbar-nav col-md-4">
-                      <li><a href="{% url 'addressbook:add_contact' %}">Add Contact</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#modal-add" data-id="">Add Contact</a></li>
                       <li><a href="{% url 'addressbook:import_csv' %}">Import CSV</a></li>
                       <li><a href="{% url 'addressbook:export_csv' %}">Export CSV</a></li>
                       <li><a href="{% url 'addressbook:logout' %}">Log Out</a></li>
@@ -30,6 +30,32 @@
         </div>
     </body>
     {% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $('#add-contact').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: {% url 'addressbook:testing' %},
+                data: {
+                    first_name: $('#id_first_name').val(),
+                    last_name: $('#id_last_name').val(),
+                    contact_number: $('#id_contact_number').val(),
+                    address: $('#id_address').val(),
+                },
+                success: function(json_response) {
+                    $.get("/", function(json_response) {
+                        $('#contact-table').html($(json_response).find('#contact-table').html());
+                        $('#add-contact')[0].reset();
+                    }); 
+                },
+                error: function(json_response) {
+                  alert(JSON.stringify(json_response))
+                },
+            });
+            $('#modal-add').modal('toggle');
+        });
+    </script>
     {% endblock %}
 </html>

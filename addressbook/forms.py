@@ -15,3 +15,6 @@ class ContactForm(forms.ModelForm):
 			'contact_number': forms.TextInput(attrs={'placeholder': 'eg: +639171231234'}),
 			'address': forms.TextInput(attrs={'class': 'address'})
 		}
+
+	def set_layout(self):
+		self._helper.disable_csrf = True
