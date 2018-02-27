@@ -61,6 +61,7 @@
 		                $('#contact-table').html($(json_response).find('#contact-table').html());
 		            }); 
 		            $("#message").html(json_response.success)
+		            $("#modal-body-update").modal('hide')
 		        },
 		        error: function(json_response) {
 		          alert(JSON.stringify(json_response))

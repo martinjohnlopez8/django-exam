@@ -156,6 +156,7 @@ class AjaxContactCreateView(views.JSONResponseMixin, views.AjaxResponseMixin, Vi
 		data['last_name'] = last_name
 		data['contact_number'] = contact_number
 		data['address'] = address
+		data['success'] = "Contact Added"
 
 		contact = Contact()
 		contact.user = user

@@ -48,7 +48,9 @@
                     $.get("/", function(json_response) {
                         $('#contact-table').html($(json_response).find('#contact-table').html());
                         $('#add-contact')[0].reset();
-                    }); 
+                    });
+                    $("#message").html(json_response.success)
+                    $("#modal-add").modal('hide')
                 },
                 error: function(json_response) {
                   alert(JSON.stringify(json_response))
