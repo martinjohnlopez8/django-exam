@@ -20,8 +20,8 @@
 							<td> {{ contact.last_name}} </td>
 							<td> {{ contact.contact_number }} </td>
 							<td> {{ contact.address}} </td>
-							<td> <a href="{% url 'addressbook:edit_contact' contact.id %}" data-toggle="modal" data-target="#modal-body-outer" data-id="" class="btn btn-primary btn-md active">Edit Contact</a> </td>
-							<td><a href="{% url 'addressbook:delete_contact' contact.id %}" data-toggle="modal" data-target="#modal-body-outer" class="btn btn-danger btn-md active" aria-disabled="true">Delete</a></td>
+							<td> <a href="{% url 'addressbook:edit_contact' contact.id %}" data-toggle="modal" data-target="#modal-body-update" data-id="" class="btn btn-primary btn-md active">Edit Contact</a> </td>
+							<td> <a href="{% url 'addressbook:delete_contact' contact.id %}" data-toggle="modal" data-target="#modal-body-delete" class="btn btn-danger btn-md active" aria-disabled="true">Delete</a></td>
 						{% endfor %}
 					</table>
 				</div>
@@ -66,7 +66,7 @@
 		    </div>
 		</div>
 	</div>
-<div class="modal fade" id="modal-body-outer" role="dialog">
+<div class="modal modal-body-update fade" id="modal-body-update" role="dialog">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -79,7 +79,18 @@
 		</div>
 	</div>
 </div>
-
+<div class="modal modal-body-delete fade" id="modal-body-delete" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
 </div>
 </html>
 {% endblock %}

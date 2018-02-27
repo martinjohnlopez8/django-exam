@@ -232,7 +232,3 @@ footer a:hover, footer a:focus { color: #fff; border-bottom: 1px dotted #fff; }
 .font-blue {
 	color: #003366;
 }
-
-.add-form input {
-	display: block;
-}

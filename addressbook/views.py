@@ -71,7 +71,7 @@ class ContactListView(ListView):
 		})
 		return context
 
-class ContactUpdateView(UpdateView):
+class ContactUpdateView(views.JSONResponseMixin, UpdateView):
 	model = Contact
 	template_name = 'addressbook/edit_contact.html'
 	form_class = ContactForm
@@ -80,27 +80,59 @@ class ContactUpdateView(UpdateView):
 	pk_url_kwarg = 'contact_id'
 
 	def post(self, request, *args, **kwargs):
-		form = ContactForm(self.request.POST)
-		print(self.request.POST)
-		if form.is_valid():
-			print("TAMA")
-		else:
-			print('MALI')
-		return redirect('addressbook:home')
+		contact = self.request.POST
+		print(contact)
+		contact_id = contact['contact_id']
+		user = self.request.user
+		form = Contact()
+
+		if contact_id:
+			update_contact = Contact.objects.get(id=contact_id)
+			update_contact.first_name = contact['first_name']
+			update_contact.last_name = contact['last_name']
+			update_contact.contact_number = contact['contact_number']
+			update_contact.address = contact['address']
+
+			update_contact.user = user
+			update_contact.save()
+
+			data = {}
+			data['success'] = 'Contact Updated'
+		return self.render_json_response(data)
 
 	def get_object(self):
 		contact_id = self.kwargs.get('contact_id', None)
 		print(contact_id)
 		return get_object_or_404(Contact, pk=contact_id )
 
-	def get_query(self):
-		return Contact.objects.filter(user=self.request.user)
 
-class ContactDeleteView(DeleteView):
+class ContactDeleteView(views.JSONResponseMixin, DeleteView):
 	model = Contact
+	template_name = 'addressbook/delete_contact.html'
 	success_url = reverse_lazy('addressbook:home')
 
 	pk_url_kwarg = 'contact_id'
+
+	def post(self, request, *args, **kwargs):
+		contact = self.request.POST
+		print(contact)
+		contact_id = contact['contact_id']
+		user = self.request.user
+		form = Contact()
+
+		data = {}
+		data['success'] = 'Contact Deleted'
+
+		if contact_id:
+			update_contact = Contact.objects.get(id=contact_id)
+			update_contact.delete()
+
+		return self.render_json_response(data)
+
+	def get_object(self):
+		contact_id = self.kwargs.get('contact_id', None)
+		print(contact_id)
+		return get_object_or_404(Contact, pk=contact_id )
 
 class LogoutView(View):
 	def get(self, request):

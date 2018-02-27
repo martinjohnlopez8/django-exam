@@ -1,0 +1,45 @@
+{% load staticfiles %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<form action="" id="delete-contact" class="delete-form-{{contact.id}}">{% csrf_token %}
+				    <h4>Are you sure you want to delete contact "{{ object }}"?</h4>
+				    <input type="submit" value="Confirm" class="btn btn-primary btn-md" />
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% block script %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+		$("#delete-contact").on('submit', function(e){
+			e.preventDefault()
+			$.ajax({
+				type: "POST",
+				url: "{% url 'addressbook:delete_contact' contact.id %}",
+				data: {
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					contact_id: '{{ contact.id }}'
+				},
+				success: function(json_response) {
+				    $.get("/", function(json_response) {
+				        $('#contact-table').html($(json_response).find('#contact-table').html());
+				        $('#message').html('<h3>Contact Deleted</h3>')
+				    }); 
+				    $("#modal-body-delete").modal('hide')
+				},
+				error: function(json_response) {
+				  alert(JSON.stringify(json_response))
+				},
+			});
+			$("#modal-body-delete").modal('hide')
+		});
+
+		$('#cancel-button-delete').on('click', function(){
+			alert('{{contact.id}}')
+		});
+	</script>
+	{% endblock %}
+

@@ -7,11 +7,11 @@
 		<link rel="stylesheet" href="{% static 'addressbook/css/style.css' %}">
 	</head>
 	<body>
-		<div class="container-fluid" id="testingg">
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-4 col-md-offset-4 add-form {{contact.id}}">
+				<div class="col-md-4 col-md-offset-4 add-form">
 					<h1>Update Contact</h1>
-					<form action="" id="update-contact" >{% csrf_token %}
+					<form action="" id="update-contact" class="update-form-{{contact.id}}" >{% csrf_token %}
 						<div class="form-group">
 							<label for="{{ form.first_name.id_for_label }}">First Name*</label>
 							{{ form.first_name }}
@@ -33,6 +33,7 @@
 							{{ form.address.errors }}
 						</div>
 						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</form>
 				</div>
 			</div>
@@ -48,24 +49,26 @@
 		        type: "POST",
 		        url: "{% url 'addressbook:edit_contact' contact.id %}",
 		        data: {
-		            first_name: $('#id_first_name').val(),
-		            last_name: $('#id_last_name').val(),
-		            contact_number: $('#id_contact_number').val(),
-		            address: $('#id_address').val(),
-		            csrfmiddlewaretoken: '{{ csrf_token }}'
+		            first_name: $('.update-form-{{contact.id}} :input[name=first_name]').val(),
+		            last_name: $('.update-form-{{contact.id}} :input[name=last_name]').val(),
+		            contact_number: $('.update-form-{{contact.id}} :input[name=contact_number]').val(),
+		            address: $('.update-form-{{contact.id}} :input[name=address]').val(),
+		            csrfmiddlewaretoken: '{{ csrf_token }}',
+		            contact_id: '{{ contact.id }}'
 		        },
 		        success: function(json_response) {
-		        	alert($('#id_first_name').val())
 		            $.get("/", function(json_response) {
 		                $('#contact-table').html($(json_response).find('#contact-table').html());
 		            }); 
+		            $("#message").html(json_response.success)
 		        },
 		        error: function(json_response) {
 		          alert(JSON.stringify(json_response))
 		        },
 		    });
-		    $('#update-contact').modal('hide');
+		    $("#modal-body-update").modal('hide')
 		});
+
 	</script>
 	{% endblock %}
 </html>

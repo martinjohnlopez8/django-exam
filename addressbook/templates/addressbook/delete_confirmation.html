@@ -1,6 +1,0 @@
-{% extends 'addressbook/base.html' %}
-
-{% block content %}
-	<p>Are you sure you want to delete contact?</p>
-	<a href="{% url 'addressbook:delete_contact' contact.id %}">Delete</a>
-{% endblock %}
