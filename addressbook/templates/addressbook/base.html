@@ -37,7 +37,7 @@
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: {% url 'addressbook:testing' %},
+                url: {% url 'addressbook:add_contact' %},
                 data: {
                     first_name: $('#id_first_name').val(),
                     last_name: $('#id_last_name').val(),
@@ -54,7 +54,7 @@
                   alert(JSON.stringify(json_response))
                 },
             });
-            $('#modal-add').modal('toggle');
+            $('#modal-add').modal('hide');
         });
     </script>
     {% endblock %}

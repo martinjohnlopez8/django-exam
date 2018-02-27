@@ -1,12 +1,12 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from addressbook.views import ContactCreateView
 from addressbook.views import ContactUpdateView
 from addressbook.views import LoginView
 from addressbook.views import ContactListView
 from addressbook.views import ContactDeleteView
 from addressbook.views import LogoutView
 from addressbook.views import AjaxContactCreateView
+from addressbook.views import AjaxContactUpdateView
 
 from . import views
 
@@ -19,5 +19,6 @@ urlpatterns = [
 	path('exportcsv/', views.export_csv, name='export_csv'),
 	path('importcsv/', views.import_csv, name='import_csv'),
 	path('login/', LoginView.as_view(), name='login'),
-	path('testing/', AjaxContactCreateView.as_view(), name='testing')
+	path('add/', login_required(AjaxContactCreateView.as_view()), name='add_contact'),
+	# path('testing/<int:contact_id>', login_required(AjaxContactUpdateView.as_view()), name='edit_contact')
 ]

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import login as user_login
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout as user_logout
@@ -78,6 +79,20 @@ class ContactUpdateView(UpdateView):
 
 	pk_url_kwarg = 'contact_id'
 
+	def post(self, request, *args, **kwargs):
+		form = ContactForm(self.request.POST)
+		print(self.request.POST)
+		if form.is_valid():
+			print("TAMA")
+		else:
+			print('MALI')
+		return redirect('addressbook:home')
+
+	def get_object(self):
+		contact_id = self.kwargs.get('contact_id', None)
+		print(contact_id)
+		return get_object_or_404(Contact, pk=contact_id )
+
 	def get_query(self):
 		return Contact.objects.filter(user=self.request.user)
 
@@ -96,6 +111,35 @@ class AjaxContactCreateView(views.JSONResponseMixin, views.AjaxResponseMixin, Vi
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
 	    return super(AjaxContactCreateView, self).dispatch(request, *args, **kwargs)
+
+	def post_ajax(self, request, *args, **kwargs):
+		user = self.request.user
+		first_name = request.POST.get('first_name')
+		last_name = request.POST.get('last_name')
+		contact_number = request.POST.get('contact_number')
+		address = request.POST.get('address')
+
+		data = {}
+		data['first_name'] = first_name
+		data['last_name'] = last_name
+		data['contact_number'] = contact_number
+		data['address'] = address
+
+		contact = Contact()
+		contact.user = user
+		contact.first_name = first_name
+		contact.last_name = last_name
+		contact.contact_number = contact_number
+		contact.address = address
+		contact.save()
+
+		print(data)
+		return self.render_json_response(data)
+
+class AjaxContactUpdateView(views.JSONResponseMixin, views.AjaxResponseMixin, View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+	    return super(AjaxContactUpdateView, self).dispatch(request, *args, **kwargs)
 
 	def post_ajax(self, request, *args, **kwargs):
 		user = self.request.user
