@@ -51,6 +51,7 @@
                     });
                     $("#message").html(json_response.success)
                     $("#modal-add").modal('hide')
+                    $('.modal-backdrop').remove()
                 },
                 error: function(json_response) {
                   alert(JSON.stringify(json_response))

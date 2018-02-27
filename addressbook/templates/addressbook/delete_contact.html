@@ -25,7 +25,7 @@
 				},
 				success: function(json_response) {
 				    $.get("/", function(json_response) {
-				        $('#contact-table').html($(json_response).find('#contact-table').html());
+				        $("body").html(json_response)
 				        $('#message').html('<h3>Contact Deleted</h3>')
 				    }); 
 				    $("#modal-body-delete").modal('hide')
