@@ -58,11 +58,10 @@
 		        },
 		        success: function(json_response) {
 		            $.get("/", function(json_response) {
-		                $('#contact-table').html($(json_response).find('#contact-table').html());
+		                $("body").html(json_response)
+		                $("#message").html(json_response.success)
+		                $('.modal-backdrop').remove()
 		            }); 
-		            $("#message").html(json_response.success)
-		            $("#modal-body-update").modal('hide')
-		            $('.modal-backdrop').remove()
 		        },
 		        error: function(json_response) {
 		          alert(JSON.stringify(json_response))
